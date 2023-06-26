@@ -1,0 +1,88 @@
+﻿@model IEnumerable<AppCinema.Models.Movie>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@{
+    ViewData["Title"] = "List of Movies";
+}
+
+<div class="row">
+
+    @foreach(var e in Model)
+    {
+
+        <!-- col-md-4 - 4 col  sredniego rozmiaru -->   <!-- col-xs-6 - 6 col extra small -->
+        <div class="col-md-4 col-xs-6 border-primary mb-3">
+            <!-- szyrokoś max 540px-->
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <!-- wewnetrzy  tej karty, mamy naglowek karty -->
+                        <div class="card-header text-white bg-info">
+                            <p class="card-text">
+                                <h5 class="card-title">
+
+                                   @e.Name  
+
+                                    <!-- biedziemy miec icon redokuwania obok nazwy filma-->
+                                    <a class="text-white float-right"><i class="bi bi-pencil-square"></i></a>
+                            </h5>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <!-- wyswietlenie zdjecia filma -->
+                        <img src="@e.ImageURL" width="100%" alt="@e.Name">
+                    </div>
+
+                    <!-- Opys card filma -->
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text">@e.Description</p>
+                            <p class="card-text"><b>Cinema: </b>@e.Cinema.Name</p>
+                            <p class="card-text"><b>Category: </b>@e.MovieCategory</p>
+                            <p class="card-text"><b>Start Date: </b>@e.StartDate.ToString("dd MMM yy")</p>
+                            <p class="card-text"><b>End Date: </b>@e.EndDate.ToString("dd MMM yy")</p>
+                            <p class="card-text ">
+                                <b>Status: </b>
+                                @if (DateTime.Now >= e.StartDate && DateTime.Now <= e.EndDate)
+                                {
+                                    <span class="badge bg-success text-white">AVAILABLE</span> <!-- В НАЯВНОСТІ -->
+                                }
+                                else if (DateTime.Now > e.EndDate)
+                                {
+                                    <span class="badge bg-danger text-white">EXPIRED</span> <!-- закінчівся -->
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary text-white">UPCOMING</span> <!-- МАЙБУТНІЙ -->
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="card-footer">
+                            <p class="card-text">
+                                <a class="btn btn-outline-primary float-right" asp-controller="Movies" asp-action="Details" asp-route-id="@e.Id">
+                                    <i class="bi bi-eye-fill"></i> Show Details
+                                </a>
+                                <a class="btn btn-success text-white"> <i class="bi bi-cart-plus"></i> Add to Cart (Price @e.Price.ToString("c"))</a>
+                            </p>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+
