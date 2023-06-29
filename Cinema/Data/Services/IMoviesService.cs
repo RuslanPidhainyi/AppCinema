@@ -1,4 +1,5 @@
 ﻿using AppCinema.Data.Base;
+using AppCinema.Data.ViewModels;
 //using AppCinema.Data.ViewModels;
 using AppCinema.Models;
 using System.Collections;
@@ -14,9 +15,11 @@ namespace AppCinema.Data.Services
 
         Task<Movie> GetMovieByIdAsync(int id);
 
-        //Task AddNewMovieAsync(NewMovieVM data);
+        Task<NewMovieDropdownsVM> GetNewMovieDropdownsValues();
 
-        //Task UpdateMovieAsync(NewMovieVM data);
+        Task AddNewMovieAsync(NewMovieVM data);
+
+        Task UpdateMovieAsync(NewMovieVM data);
 
     }
 }
