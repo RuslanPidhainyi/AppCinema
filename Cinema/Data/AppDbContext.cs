@@ -19,6 +19,14 @@ namespace AppCinema.Data
         public DbSet<Producer> Producers { get; set; }
 
 
+        //Ordered relation tables
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderItem> OrderItems { get; set; }
+
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+
+
 
         //Many - to - many
         protected override void OnModelCreating(ModelBuilder modelBuilder)
