@@ -2,6 +2,7 @@
 using AppCinema.Data.Services;
 using AppCinema.Data.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace AppCinema.Controllers
 {
@@ -30,5 +31,30 @@ namespace AppCinema.Controllers
 
             return View(response);
         }
+
+        //RedirectToActionResult - результатом перенаправлення до дії
+        //public async Task<RedirectToActionResult> AddItemToShoppingCart(int Id)
+        public async Task<IActionResult> AddItemToShoppingCart(int Id)
+        {
+            var item = await _moviesService.GetMovieByIdAsync(Id);
+
+            if(item != null)
+            {
+                _shoppingCart.AddItemToCart(item);
+            }
+            return RedirectToAction(nameof(ShoppingCart));
+        }
+
+        public async Task<IActionResult> RemoveItemToShoppingCart(int Id)
+        {
+            var item = await _moviesService.GetMovieByIdAsync(Id);
+
+            if (item != null)
+            {
+                _shoppingCart.RemoveItemFromCart(item);
+            }
+            return RedirectToAction(nameof(ShoppingCart));
+        }
+
     }
 }
