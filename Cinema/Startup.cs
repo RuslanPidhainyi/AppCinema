@@ -1,7 +1,9 @@
 using AppCinema.Data;
+using AppCinema.Data.Cart;
 using AppCinema.Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http; //for IHttpContextAccessor
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +41,16 @@ namespace AppCinema
             services.AddScoped<ICinemasService, CinemasService>();
             services.AddScoped<IMoviesService, MoviesService>();
 
+            
+            //3 step ( And downstairs )
+
+            //А використовуючи метод add single tour, ми додаємо єдиний сервіс цього типу.
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(e => ShoppingCart.GetShoppingCart(e));
+
+
+            services.AddSession();
+
 
             //Seed DB
             //AppDbInitializer.Seed(app);
@@ -69,6 +81,12 @@ namespace AppCinema
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //step 3.1
+            app.UseSession();
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             app.UseAuthorization();
 

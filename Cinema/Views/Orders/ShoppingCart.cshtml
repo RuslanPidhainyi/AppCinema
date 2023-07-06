@@ -1,0 +1,72 @@
+﻿@using AppCinema.Data.ViewModels;
+@model ShoppingCartVM 
+@{
+    ViewData["Title"] = "Shopping cart summary";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="text-center">
+            <h2>
+                You shopping cart summary <!-- Підсумок вашого кошика для покупок -->
+            </h2>
+        </div>
+
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th>Selected amount<th>
+                        <th>Movie</th>
+                        <th>Price</th>
+                        <th>Subtotal</th> <!-- Проміжний підсумок-->
+                        <th></th> 
+                    </tr>  
+                </thead>
+
+                <tbody>
+                    @foreach(var e in Model.ShoppingCart.ShoppingCartItems)
+                    {
+                        <tr>
+                            <td class="align-middle">@e.Amout</td>
+                            <td class="align-middle">@e.Movie.Name</td>
+                            <td class="align-middle">@e.Movie.Price.ToString("c")</td>
+                            <td class="align-middle">@((e.Amout*e.Movie.Price).ToString("c"))</td>
+
+                            <td class="align-middle">
+
+                                <a class="text-danger" asp-controller="Orders" asp-action="RemovieItemFromShoppingCart" asp-route-id="@e.Movie.Id">
+                                    <i class="bi bi--cart-dash"></i> 
+                                </a>
+
+                                <a class="text-success" asp-controller="Orders" asp-action="AddItemToShoppingCart" asp-route-id="@e.Movie.Id">
+                                    <i class="bi bi--cart-plus"></i>
+                                </a>
+
+                            </td>
+                        </tr>                    
+                    }
+                </tbody>
+
+                <tfood>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td><b>Total:</b></td>
+                        <td>
+                            @Model.ShoppingCartTotal.ToString("c")
+                        </td>
+                        <td></td>
+                    </tr>
+                </tfood>
+
+            </table>
+
+            <div class="text-center">
+                <div class="btn-group">
+                    <a class="btn btn-outline-success" asp-controller="Movies" asp-action="Index"> 
+                        Add more items
+                    </a>
+                </div>
+            </div>
+    </div>
+</div>
