@@ -12,6 +12,13 @@ namespace AppCinema.Controllers
         private readonly ShoppingCart _shoppingCart;
         private readonly IOrdersService _ordersService;
 
+        public async Task<IActionResult> Index()
+        {
+            string userId = "";
+            var orders = await _ordersService.GetOrdersByUserIdAsync(userId);
+            return View(orders); 
+        }
+
         public OrdersController(IMoviesService moviesService, ShoppingCart shoppingCart, IOrdersService ordersService)
         {
             _moviesService = moviesService;
