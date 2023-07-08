@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection; //for GetRequiredService
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppCinema.Data.Cart
 {
@@ -133,6 +134,14 @@ namespace AppCinema.Data.Cart
                 .Sum();
             
             return total;
+        }
+
+        public async Task ClearShoppingCartAsync()
+        {
+            var items = await _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).ToListAsync();
+
+            _context.ShoppingCartItems.RemoveRange(items);
+            await _context.SaveChangesAsync();
         }
     }
 }
