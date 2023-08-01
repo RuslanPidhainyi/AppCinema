@@ -1,9 +1,14 @@
 ﻿using AppCinema.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore; 
 
 namespace AppCinema.Data
-{
-    public class AppDbContext : DbContext 
+{                               /*
+                                 Wyfowalismy biblioteku "IdentityDbContext" i w parametry wrzucili obiekt klass <ApplicationUser> 
+                                 <ApplicationUser> - ten obiekt klass przychowuje tylko jedne property - FullName.
+                                 Propertis "FullName" - zostanie dodane, do naszej biblioteki "IdentityDbContext", za pomocą migracji pod nazwą "20230723133109_Identity_Adde.cs"
+                                 */
+    public class AppDbContext : IdentityDbContext<ApplicationUser> 
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) 
         { }

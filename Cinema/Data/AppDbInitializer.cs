@@ -1,14 +1,19 @@
-﻿using AppCinema.Models;
+﻿using AppCinema.Data.Static;
+using AppCinema.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AppCinema.Data
 {
     public class AppDbInitializer
     {
+        
+
         //Seeding your DB (wypewnienie BazyDanych)
         public static void Seed(IApplicationBuilder applicationBuilder)
         {
@@ -390,6 +395,75 @@ namespace AppCinema.Data
 
                     });
                     context.SaveChanges();
+                }
+            }
+        }
+
+        
+        
+        public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
+        {
+            //Mи збираємося створити область застосування послуги.
+            using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+            {
+                //Roles 
+
+                //roleManager - this our BD
+                //І ми сказали, що для створення ролей або роботи з ними в системі ідентичності ми можемо використовувати роль менеджер.
+                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                //ви збираєтеся використовувати менеджер доріг, щоб перевірити, чи роль існує в базі даних чи ні. Якщо ні то тоді створи роль Адміна 
+                if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+                }
+
+
+                if(!await roleManager.RoleExistsAsync(UserRoles.User))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+                }
+
+                //User
+                //userManager - this our BD
+                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                string adminUserEmail = "admin@mail.com";
+
+                var adminUser = await userManager.FindByEmailAsync(adminUserEmail);
+
+                if (adminUser == null)
+                {
+                    var newAdminUser = new ApplicationUser()
+                    {
+                        FullName = "Admin User",
+                        UserName = "admin-user",
+                        Email = adminUserEmail,
+                        EmailConfirmed = true
+                    };
+                    //додаємо цього користувача до нашої бази даних.
+                    await userManager.CreateAsync(newAdminUser, "12345678Qw!");
+                    await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
+                }
+
+
+
+                string appUserEmail = "user@mail.com";
+
+                var appUser = await userManager.FindByEmailAsync(appUserEmail);
+
+                if (appUser == null)
+                {
+                    var newAppUser = new ApplicationUser()
+                    {
+                        FullName = "Application User",
+                        UserName = "app-user",
+                        Email = appUserEmail,
+                        EmailConfirmed = true
+                    };
+                    //додаємо цього користувача до нашої бази даних.(створюємо і додаємо)
+                    await userManager.CreateAsync(newAppUser, "12345678Qw!");
+                    await userManager.AddToRoleAsync(newAppUser, UserRoles.User);
                 }
             }
         }

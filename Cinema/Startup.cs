@@ -1,10 +1,13 @@
 using AppCinema.Data;
 using AppCinema.Data.Cart;
 using AppCinema.Data.Services;
+using AppCinema.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http; //for IHttpContextAccessor
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -50,13 +53,17 @@ namespace AppCinema
             services.AddScoped(e => ShoppingCart.GetShoppingCart(e));
 
 
+
+            //Authentication and authorization 
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+            services.AddMemoryCache();
+
             services.AddSession();
 
-
-            //Seed DB
-            //AppDbInitializer.Seed(app);
-
-
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -87,6 +94,11 @@ namespace AppCinema
             //step 3.1
             app.UseSession();
 
+
+            //Authentication and authorization
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             app.UseAuthorization();
@@ -100,6 +112,7 @@ namespace AppCinema
 
             //Seed DB
             AppDbInitializer.Seed(app);
+            AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
         }
     }
 }
