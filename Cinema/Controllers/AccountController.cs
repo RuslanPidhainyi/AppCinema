@@ -4,7 +4,9 @@ using AppCinema.Data.ViewModels;
 using AppCinema.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AppCinema.Controllers
@@ -21,6 +23,11 @@ namespace AppCinema.Controllers
             _context = context;
         }
 
+        public async Task<IActionResult> Users()
+        {
+            var users = await _context.Users.ToListAsync();
+            return View(users); 
+        }
        
         public IActionResult Login() => View(new LoginVM());
 
@@ -105,5 +112,9 @@ namespace AppCinema.Controllers
             return RedirectToAction("Index", "Movies");
         }
 
+        public IActionResult AccessDenied(string ReturnUrl)
+        {
+            return View();
+        }
     }
 }

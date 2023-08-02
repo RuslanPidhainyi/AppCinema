@@ -1,6 +1,8 @@
 ﻿using AppCinema.Data;
 using AppCinema.Data.Services;
+using AppCinema.Data.Static;
 using AppCinema.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -8,6 +10,15 @@ using System.Threading.Tasks;
 
 namespace AppCinema.Controllers
 {
+    /*
+      [Authorize] - Якщо ви хочете обмежити доступ усіх користувачів до будь-якого API та зв’язку чи будь-якої дії з цього контролер
+                    Якщо ви хочете отримати доступ до будь-якої дії тут, вам потрібно авторизуватися.
+
+                І оскільки ми не визначили жодних ролей тут, перевірятиметься лише те,
+                чи ви ввійшли в систему або ні.
+   */
+
+    [Authorize(Roles = UserRoles.Admin)]
     public class ActorsController : Controller
     {
         //prywatny odczyt  
@@ -33,7 +44,12 @@ namespace AppCinema.Controllers
         */
 
 
+        /*
+         [AllowAnonymous] - щоб дозволити автентифікованим користувачам або дозволити анонімним, наприклад, перерахування всіх Actors 
+        таким же чином, коли ви не ввійшли в систему.
+        */
         //Index
+        [AllowAnonymous]
         public async Task< IActionResult> Index()
         {
 
@@ -63,6 +79,7 @@ namespace AppCinema.Controllers
         }
 
         //Details
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var actorDetails = await _service.GetByIdAsync(id);
@@ -129,6 +146,6 @@ namespace AppCinema.Controllers
             return RedirectToAction(nameof(Index));
             
         }
-        
+                       
     }
 }

@@ -17,9 +17,21 @@ namespace AppCinema.Data.Services
 
 
         //бажанням отримати всі замовлення з бази даних.
-        public async Task<List<Order>> GetOrdersByUserIdAsync(string userId)
+        public async Task<List<Order>> GetOrdersByUserIdAndRoleAsync(string userId, string userRole)
         {
-           var orders = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Movie).Where(n => n.UserId == userId).ToListAsync(); 
+            /*
+              Отже, ми зараз отримуємо всі замовлення, відфільтровані за ідентифікатором користувача, тому давайте просто видалимо
+              ідентифікатор користувача ".Where(n => n.UserId == userId)",
+
+              оскільки якщо користувач, який увійшов у наш додаток, є адміністратором, адміністратори зможуть
+              щоб переглянути всі замовлення в додатку.  
+            */
+            var orders = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Movie).Include(n => n.User).ToListAsync(); 
+            
+            if(userRole != "Admin")
+            {
+                orders = orders.Where(n => n.UserId == userId).ToList();
+            }
             return orders;
         }
 

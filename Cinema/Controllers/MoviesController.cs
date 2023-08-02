@@ -1,6 +1,8 @@
 ﻿using AppCinema.Data;
 using AppCinema.Data.Services;
+using AppCinema.Data.Static;
 using AppCinema.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering; //for Select which corresponds than List Actor, Cinema, Movie in Routing Movie/Create. This line 65
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace AppCinema.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class MoviesController : Controller
     {
 
@@ -42,6 +45,7 @@ namespace AppCinema.Controllers
 
 
         //Index
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var allMovies = await _service.GetAllAsync( e => e.Cinema);            
@@ -49,6 +53,7 @@ namespace AppCinema.Controllers
         }
 
         //Filter for search movies
+        [AllowAnonymous]
         public async Task<IActionResult> Filter(string searchString)
         {
             var allMovies = await _service.GetAllAsync(e => e.Cinema);
@@ -72,6 +77,7 @@ namespace AppCinema.Controllers
 
         //Details
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details (int id)
         {
             var movieDetail = await _service.GetMovieByIdAsync( id);

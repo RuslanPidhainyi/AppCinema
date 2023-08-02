@@ -1,11 +1,16 @@
 ﻿using AppCinema.Data.Cart;
 using AppCinema.Data.Services;
+using AppCinema.Data.Static;
 using AppCinema.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AppCinema.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
         private readonly IMoviesService _moviesService;
@@ -14,8 +19,25 @@ namespace AppCinema.Controllers
 
         public async Task<IActionResult> Index()
         {
-            string userId = "";
-            var orders = await _ordersService.GetOrdersByUserIdAsync(userId);
+            /*
+             І в цьому випадку я хочу отримати ідентифікатор користувача, який увійшов у систему, тож для цього я просто введу типи ClaimTypes.
+            
+             ClaimTypes - Вимоги зазвичай представляються у формі пари ключ-значення і можуть містити різноманітну інформацію про користувача,
+             таку як ідентифікатор, роль, електронну пошту, тощо.
+             
+            ClaimTypes містить набір стандартних типів вимог, таких як:
+
+                1. Name: Ім'я користувача.
+                2. Role: Роль користувача.
+                3. Email: Електронна пошта користувача.
+                4. Sid: Керований ідентифікатор користувача.
+                5. ClaimType: Загальний тип вимоги.
+
+             */
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userRole = User.FindFirstValue(ClaimTypes.Role);
+
+            var orders = await _ordersService.GetOrdersByUserIdAndRoleAsync(userId, userRole);
             return View(orders); 
         }
 
@@ -70,8 +92,8 @@ namespace AppCinema.Controllers
         {
             var items = _shoppingCart.GetShoppingCartsItems();
 
-            string userId = "";
-            string userEmailAddress = "";
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
 
             await _ordersService.StoreOredrAsync(items, userId, userEmailAddress);
             await _shoppingCart.ClearShoppingCartAsync();
