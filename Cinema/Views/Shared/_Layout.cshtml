@@ -39,29 +39,32 @@
                         </li>
 
 
-                        <!-- Button Management and inside List with pages: Cinemas, Producers and Actors -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="bi bi-gear"></i> Management
-                            </a>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <!-- Button Management and inside List with pages: Cinemas, Producers and Actors -->
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="bi bi-gear"></i> Management
+                                </a>
 
-                            <!--List with pages: Cinemas, Producers and Actors -->
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <!--List with pages: Cinemas, Producers and Actors -->
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
-                                <!-- Cinemas -->
-                                <a class="dropdown-item" asp-controller="Cinemas" asp-action="Index"><i class="bi bi-camera-reels"></i> Cinemas</a>
+                                    <!-- Cinemas -->
+                                    <a class="dropdown-item" asp-controller="Cinemas" asp-action="Index"><i class="bi bi-camera-reels"></i> Cinemas</a>
 
-                                <!-- Producers -->
-                                <a class="dropdown-item" asp-controller="Producers" asp-action="Index"><i class="bi bi-headset"></i> Producers</a>
+                                    <!-- Producers -->
+                                    <a class="dropdown-item" asp-controller="Producers" asp-action="Index"><i class="bi bi-headset"></i> Producers</a>
 
-                                <!-- Actors -->
-                                <a class="dropdown-item" asp-controller="Actors" asp-action="Index"><i class="bi bi-person-square"></i> Actors</a>
+                                    <!-- Actors -->
+                                    <a class="dropdown-item" asp-controller="Actors" asp-action="Index"><i class="bi bi-person-square"></i> Actors</a>
 
-                            </div>
+                                </div>
 
-                        </li>
-
+                            </li>
+                        }  
                         
+
 
                     </ul>
 
@@ -76,24 +79,8 @@
                         @await Component.InvokeAsync("ShoppingCartSummary")
                     </ul>
 
-                    <!-- For icon Log-in in navigationBar -->
-                    <a class="btn btn-outline-success my-2 my-sm-0" asp-controller="Account" asp-action="Login">
-                        <i class="bi bi-box-arrow-in-right"></i> Log in
-                    </a>
-
-                    <!-- User profile section -->
-                    <div class="dropdown">
-                        <button class="btn btn-outline-success dropdown-toggle" type="button" id="profile-btn" data-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-person-badge"></i> Hello User
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="profile-btn">
-                            <li>
-                                <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
-                                    <i class="bi bi-list"></i>Orders
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <!-- Ця лінійка передає блок коду сюди. Передає те що знаходиьтся в відоку _Identity.cshtml -->
+                    <partial name="_Identity.cshtml" /> 
 
                     <!--///////////////////////////////////////////////////////////////////////////////////////////////-->
                 </div>

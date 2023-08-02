@@ -1,0 +1,59 @@
+﻿<!-- @@using Microsoft.AspNetCore.Identity; -->
+
+<!--
+    Mи просто отримуємо ім’я користувача, який увійшов у систему.
+    Для цього нам потрібно вставити UserManager, а потім з’явитися в inject.
+
+    Ми введемо службу, і це буде менеджер користувачів
+
+    Тепер диспетчер користувачів не працює належним чином, оскільки не може знайти простір імен(it cannot find the namespace).
+
+    Тож із цього вони просто відкриють це за допомогою Microsoft, крапка ASP.NET Core, цю ідентифікацію. "@@using Microsoft.AspNetCore.Identity;"
+    Також цю лінію коду можна зберігати "@@using Microsoft.AspNetCore.Identity;", як і в цьому файлі, так і в Views > _ViewImports.cshtml
+    
+
+    Ми матимемо привітні оголошення та отримаємо ім’я користувача, який увійшов у систему.
+-->
+@inject UserManager<ApplicationUser> UserManager;
+
+@if(!User.Identity.IsAuthenticated)
+{
+    <!-- For icon Log-in in navigationBar -->
+    <a class="btn btn-outline-success my-2 my-sm-0" asp-controller="Account" asp-action="Login">
+        <i class="bi bi-box-arrow-in-right"></i> Log in
+    </a>
+    <span style="padding: 5px;"></span>
+
+    <!-- For icon Register in navigationBar -->
+    <a class="btn btn-outline-primary my-2 my-sm-0" asp-controller="Account" asp-action="Register">
+        <i class="bi bi-person-plus"></i> Register
+    </a>
+    <span style="padding: 5px;"></span>
+}
+else
+{
+    <!-- User profile section -->
+    <div class="dropdown">
+        <button class="btn btn-outline-success dropdown-toggle" type="button" id="profile-btn" data-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-badge"></i> Hello @UserManager.GetUserName(User);
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="profile-btn">
+            <li>
+                <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
+                    <i class="bi bi-list"></i>Orders
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Log out -->
+    <form asp-controller="Account" asp-action="Logout">
+        <button class="btn btn-outline-danger my-2 my-sm-0">
+            <i class="bi bi-box-arrow-in-right"></i> Log out
+        </button>
+    </form>
+    <span style="padding: 5px;"></span>
+}
+
+
+

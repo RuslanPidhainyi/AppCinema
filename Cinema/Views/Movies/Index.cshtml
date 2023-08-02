@@ -26,10 +26,13 @@
                                 <h5 class="card-title">
 
                                    @e.Name  
-
-                                    <!-- biedziemy miec icon redokuwania obok nazwy filma-->
-                                    <a class="text-white float-right" asp-controller="Movies" asp-action="Edit" asp-route-id="@e.Id"><i class="bi bi-pencil-square"></i></a>
-                            </h5>
+                                   @if(User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                   {
+                                        <!-- biedziemy miec icon redokuwania obok nazwy filma-->
+                                        <a class="text-white float-right" asp-controller="Movies" asp-action="Edit" asp-route-id="@e.Id"><i class="bi bi-pencil-square"></i></a>
+                                   }
+                                    
+                                </h5>
                             </p>
                         </div>
                     </div>
