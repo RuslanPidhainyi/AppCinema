@@ -52,6 +52,12 @@ https://github.com/RuslanPidhainyi/AppCinema/assets/136593314/1e8efbaa-9426-48e2
 https://github.com/RuslanPidhainyi/AppCinema/assets/136593314/b6a780fe-1ee8-4b77-8b22-042129748121
 
 
+- Edit Cinema (also edit Actro and Producer)
+
+https://github.com/RuslanPidhainyi/AppCinema/assets/136593314/7954d30c-65ef-4f6a-82cf-2f12364ae780
+
+
+
 
 
 
