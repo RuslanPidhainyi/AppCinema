@@ -57,6 +57,9 @@ https://github.com/RuslanPidhainyi/AppCinema/assets/136593314/b6a780fe-1ee8-4b77
 https://github.com/RuslanPidhainyi/AppCinema/assets/136593314/7954d30c-65ef-4f6a-82cf-2f12364ae780
 
 
+- Also you can see who made the order and see which users are registered
+
+https://github.com/RuslanPidhainyi/AppCinema/assets/136593314/2f3a7d73-5676-4938-a307-5220229becb4
 
 
 
