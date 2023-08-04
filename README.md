@@ -1,6 +1,6 @@
 # Cinema
 ----
-A site for buying movie tickets to various cinemas
+A site for buying movie tickets to various cinemas. In this project I learned how to use the ASP framework
 
 ----
 The first thing to do is to specify the name of the server and the name of the database in the appsettings.json file
